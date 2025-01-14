@@ -1,5 +1,28 @@
-export default async () => {
+export default async (): Promise<Response> => {
+  // Get the current UTC date
   const utcDate = new Date()
-  const deDate = utcDate.toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })
-  return new Response(deDate)
+
+  // Convert UTC date to Berlin time
+  const deDate: string = utcDate.toLocaleString('de-DE', {
+    timeZone: 'Europe/Berlin'
+  })
+  const deDay: string = utcDate.toLocaleString('de-DE', {
+    timeZone: 'Europe/Berlin',
+    weekday: 'short'
+  })
+  const deTime: string = utcDate.toLocaleString('de-DE', {
+    timeZone: 'Europe/Berlin',
+    timeStyle: 'medium'
+  })
+
+  // Create output object
+  const output = { dateTime: deDate, day: deDay, time: deTime }
+
+  // Return response with JSON output and appropriate headers
+  return new Response(JSON.stringify(output), {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  })
 }
