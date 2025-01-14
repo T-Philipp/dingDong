@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <title>⏰</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <script type="importmap">
+      {
+        "imports": {
+          "preact": "https://esm.sh/preact@10",
+          "preact/hooks": "https://esm.sh/preact@10/hooks",
+          "htm/preact": "https://esm.sh/htm@3/preact?external=preact"
+        }
+      }
+    </script>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        background: #0f3854;
+        background: radial-gradient(ellipse at center, #0a2e38 0%, #000000 70%);
+        background-size: 100%;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      #clock {
+        font-family: 'Share Tech Mono', monospace;
+        color: #ffffff;
+        text-align: center;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        color: #daf6ff;
+        text-shadow:
+          0 0 20px rgba(10, 175, 230, 1),
+          0 0 20px rgba(10, 175, 230, 0);
+        .time {
+          letter-spacing: 0.05em;
+          font-size: 80px;
+          padding: 5px 0;
+        }
+        .date {
+          letter-spacing: 0.1em;
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script type="module">
+      import { render } from 'preact'
+      import { useState, useEffect } from 'preact/hooks'
+      import { html } from 'htm/preact'
+      import * as data from 'https://dingdong.tavra.de/.netlify/functions/time' with { type: 'json' }
+
+      export function App() {
+        return html`
+          <div id="clock">
+            <p class="date">${data.date}</p>
+            <p class="time">${data.time}</p>
+          </div>
+        `
+      }
+
+      render(html`<${App} />`, document.getElementById('app'))
+    </script>
+  </body>
+</html>
