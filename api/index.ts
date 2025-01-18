@@ -8,6 +8,7 @@ type PythonTime = {
   hour: number
   minute: number
   second: number
+  weekday: number
 }
 
 const app = express()
@@ -71,7 +72,8 @@ const pythonTime: PythonTime = {
       timeZone: 'Europe/Berlin',
       second: 'numeric'
     })
-  )
+  ),
+  weekday: utcDate.getDay()
 }
 
 // Create output object
