@@ -2,13 +2,12 @@ import express, { Response } from 'express'
 import path from 'path'
 
 type PythonTime = {
-  year: number
-  month: number
-  day: number
-  hour: number
-  minute: number
-  second: number
-  weekday: number
+  year: string
+  month: string
+  day: string
+  hour: string
+  minute: string
+  second: string
 }
 
 const app = express()
@@ -37,13 +36,30 @@ const deTime: string = utcDate.toLocaleString('de-DE', {
   timeStyle: 'medium'
 })
 const pythonTime: PythonTime = {
-  year: utcDate.getUTCFullYear(),
-  month: utcDate.getUTCMonth() + 1,
-  day: utcDate.getUTCDate(),
-  hour: utcDate.getUTCHours(),
-  minute: utcDate.getUTCMinutes(),
-  second: utcDate.getUTCSeconds(),
-  weekday: utcDate.getUTCDay()
+  year: utcDate.toLocaleString('de-DE', {
+    timeZone: 'Europe/Berlin',
+    year: 'numeric'
+  }),
+  month: utcDate.toLocaleString('de-DE', {
+    timeZone: 'Europe/Berlin',
+    month: 'short'
+  }),
+  day: utcDate.toLocaleString('de-DE', {
+    timeZone: 'Europe/Berlin',
+    day: '2-digit'
+  }),
+  hour: utcDate.toLocaleString('de-DE', {
+    timeZone: 'Europe/Berlin',
+    hour: 'numeric'
+  }),
+  minute: utcDate.toLocaleString('de-DE', {
+    timeZone: 'Europe/Berlin',
+    minute: 'numeric'
+  }),
+  second: utcDate.toLocaleString('de-DE', {
+    timeZone: 'Europe/Berlin',
+    second: 'numeric'
+  })
 }
 
 // Create output object
