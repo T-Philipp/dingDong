@@ -26,12 +26,19 @@ const deTime: string = utcDate.toLocaleString('de-DE', {
 })
 
 // Create output object
-const zeiten_output: { dateTime: string, date: string, day: string, time: string } = {
+const zeiten_output: {
+  dateTime: string
+  date: string
+  day: string
+  time: string
+} = {
   dateTime: deDateTime,
   date: deDate,
   day: deDay,
   time: deTime
 }
+
+app.use(express.static('public'))
 
 // Serve the main HTML file
 app.get('/', function (_, res: Response): void {
