@@ -2,12 +2,12 @@ import express, { Response } from 'express'
 import path from 'path'
 
 type PythonTime = {
-  year: string
-  month: string
-  day: string
-  hour: string
-  minute: string
-  second: string
+  year: number
+  month: number
+  day: number
+  hour: number
+  minute: number
+  second: number
 }
 
 const app = express()
@@ -36,30 +36,42 @@ const deTime: string = utcDate.toLocaleString('de-DE', {
   timeStyle: 'medium'
 })
 const pythonTime: PythonTime = {
-  year: utcDate.toLocaleString('de-DE', {
-    timeZone: 'Europe/Berlin',
-    year: 'numeric'
-  }),
-  month: utcDate.toLocaleString('de-DE', {
-    timeZone: 'Europe/Berlin',
-    month: 'short'
-  }),
-  day: utcDate.toLocaleString('de-DE', {
-    timeZone: 'Europe/Berlin',
-    day: '2-digit'
-  }),
-  hour: utcDate.toLocaleString('de-DE', {
-    timeZone: 'Europe/Berlin',
-    hour: 'numeric'
-  }),
-  minute: utcDate.toLocaleString('de-DE', {
-    timeZone: 'Europe/Berlin',
-    minute: 'numeric'
-  }),
-  second: utcDate.toLocaleString('de-DE', {
-    timeZone: 'Europe/Berlin',
-    second: 'numeric'
-  })
+  year: parseInt(
+    utcDate.toLocaleString('de-DE', {
+      timeZone: 'Europe/Berlin',
+      year: 'numeric'
+    })
+  ),
+  month: parseInt(
+    utcDate.toLocaleString('de-DE', {
+      timeZone: 'Europe/Berlin',
+      month: 'numeric'
+    })
+  ),
+  day: parseInt(
+    utcDate.toLocaleString('de-DE', {
+      timeZone: 'Europe/Berlin',
+      day: '2-digit'
+    })
+  ),
+  hour: parseInt(
+    utcDate.toLocaleString('de-DE', {
+      timeZone: 'Europe/Berlin',
+      hour: 'numeric'
+    })
+  ),
+  minute: parseInt(
+    utcDate.toLocaleString('de-DE', {
+      timeZone: 'Europe/Berlin',
+      minute: 'numeric'
+    })
+  ),
+  second: parseInt(
+    utcDate.toLocaleString('de-DE', {
+      timeZone: 'Europe/Berlin',
+      second: 'numeric'
+    })
+  )
 }
 
 // Create output object
