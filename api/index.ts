@@ -1,6 +1,16 @@
 import express, { Response } from 'express'
 import path from 'path'
 
+type PythonTime = {
+  year: number
+  month: number
+  day: number
+  hour: number
+  minute: number
+  second: number
+  weekday: number
+}
+
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -26,6 +36,15 @@ const deTime: string = utcDate.toLocaleString('de-DE', {
   timeZone: 'Europe/Berlin',
   timeStyle: 'medium'
 })
+const pythonTime: PythonTime = {
+  year: utcDate.getUTCFullYear(),
+  month: utcDate.getUTCMonth() + 1,
+  day: utcDate.getUTCDate(),
+  hour: utcDate.getUTCHours(),
+  minute: utcDate.getUTCMinutes(),
+  second: utcDate.getUTCSeconds(),
+  weekday: utcDate.getUTCDay()
+}
 
 // Create output object
 const zeiten_output: {
@@ -33,11 +52,13 @@ const zeiten_output: {
   date: string
   day: string
   time: string
+  pythonTime: PythonTime
 } = {
   dateTime: deDateTime,
   date: deDate,
   day: deDay,
-  time: deTime
+  time: deTime,
+  pythonTime: pythonTime
 }
 
 // Serve the main HTML file
