@@ -16,6 +16,7 @@ Für den Nachbau nötige Geräte sind:
 - Audiomodul inkl. Lautsprecher
   - Wird direkt an den Raspberry Pi Pico gelötet
   - Preis: ca. 14€
+  - Die Lautsprecher sind eventuell zu leise für größere, volle Säle - hier kann es Sinn machen, den Pico direkt an die Anlage anschließen
   - [Link](https://botland.de/weitere-module-fur-den-raspberry-pi-pico/20096-audioerweiterung-2x-5w-lautsprecher-fur-raspberry-pi-pico-waveshare-20167-5904422351847.html)
 - Stecker
   - Damit man die beiden Teile miteinander verlöten kann
