@@ -1,7 +1,8 @@
 import express, { Response } from 'express'
 import path from 'path'
+import cors from 'cors'
 
-type PythonTime = {
+type TimeTuple = {
   year: number
   month: number
   day: number
@@ -14,6 +15,7 @@ type PythonTime = {
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors()) // Enable CORS for all routes
 
 // Serve the main HTML file
 app.get('/', function (_, res: Response): void {
@@ -49,7 +51,7 @@ app.get('/time', function (_, res: Response): void {
     timeZone: 'Europe/Berlin',
     timeStyle: 'medium'
   })
-  const pythonTime: PythonTime = {
+  const timeTuple: TimeTuple = {
     year: parseInt(
       utcDate.toLocaleString('de-DE', {
         timeZone: 'Europe/Berlin',
@@ -90,25 +92,19 @@ app.get('/time', function (_, res: Response): void {
   }
 
   // Create output object
-  const zeiten_output: {
-    dateTime: string
-    date: string
-    day: string
-    time: string
-    pythonTime: PythonTime
-  } = {
+  const zeiten_output = {
     dateTime: deDateTime,
     date: deDate,
     day: deDay,
     time: deTime,
-    pythonTime: pythonTime
+    timeTuple: timeTuple
   }
 
   res.setHeader('Content-Type', 'application/json')
-  res.send(JSON.stringify(zeiten_output))
+  res.json(zeiten_output)
 })
 
 // Start the server
-// app.listen(4000, (): void => console.log('Server ready on port 3000.'))
+// app.listen(3000, (): void => console.log('Server ready on port 3000.'))
 
 export default app
