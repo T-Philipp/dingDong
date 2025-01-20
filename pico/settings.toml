@@ -1,4 +1,4 @@
 CIRCUITPY_WIFI_SSID = "XXX"
 CIRCUITPY_WIFI_PASSWORD = "XXX"
-TIME_URL = "https://ding-dong-nine.vercel.app/time"
-ZUSZEITEN_URL = "https://ding-dong-nine.vercel.app/zus-zeiten.json"
+TIME_URL = "https://dingdong.tavra.de/time/"
+ZUSZEITEN_URL = "https://dingdong.tavra.de/zus-zeiten.json"
