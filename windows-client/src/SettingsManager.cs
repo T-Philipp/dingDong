@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace dingdongwin;
 
@@ -23,7 +24,7 @@ public static class SettingsManager
             if (File.Exists(FilePath))
             {
                 var json = File.ReadAllText(FilePath);
-        var s = JsonSerializer.Deserialize<AppSettings>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var s = JsonSerializer.Deserialize(json, AppSettingsJsonContext.Default.AppSettings);
                 if (s != null) return s;
             }
         }
@@ -36,9 +37,16 @@ public static class SettingsManager
         try
         {
             Directory.CreateDirectory(Dir);
-            var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+            var json = JsonSerializer.Serialize(settings, AppSettingsJsonContext.Default.AppSettings);
             File.WriteAllText(FilePath, json);
         }
         catch { }
     }
+}
+
+// System.Text.Json source generation context for NativeAOT
+[JsonSourceGenerationOptions(WriteIndented = true, PropertyNameCaseInsensitive = true)]
+[JsonSerializable(typeof(AppSettings))]
+internal partial class AppSettingsJsonContext : JsonSerializerContext
+{
 }

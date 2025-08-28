@@ -13,7 +13,6 @@
   <InvariantGlobalization>true</InvariantGlobalization>
   <StripSymbols>true</StripSymbols>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <PublishTrimmed>false</PublishTrimmed>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
   <ItemGroup>
