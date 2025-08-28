@@ -1,4 +1,4 @@
-name: Build Windows AOT Client
+name: Build Windows Client
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
       - 'v*'
     paths:
       - 'windows-client/**'
-      - '.github/workflows/windows-aot.yml'
+  - '.github/workflows/windows-aot.yml'
   workflow_dispatch:
   release:
     types: [created]
@@ -35,7 +35,7 @@ jobs:
             magick 'windows-client/assets/bell.svg' -background none -define icon:auto-resize=16,32,48,64,128,256 'windows-client/assets/bell.ico'
           }
 
-      - name: Publish (AOT, self-contained, single-file)
+  - name: Publish (self-contained, single-file)
         run: >-
           dotnet publish windows-client/src/dingdong-win.csproj -c Release -r win-x64
           -p:PublishSingleFile=true -p:SelfContained=true -p:IncludeNativeLibrariesForSelfExtract=true

@@ -115,7 +115,7 @@ public partial class MainForm : Form
         chkAutostart.AutoSize = true;
         chkAutostart.Location = new Point(14, 366);
         chkAutostart.ForeColor = Color.Gray;
-        chkAutostart.Enabled = false; // AOT: manuell per Startup-Ordner
+    chkAutostart.Enabled = false; // Autostart wird manuell per Startup-Ordner gesetzt
 
         var btnSave = new Button { Text = "Speichern", Location = new Point(322, 364), Size = new Size(92, 30) };
         btnSave.FlatStyle = FlatStyle.Flat;
@@ -487,4 +487,4 @@ public static class AppLog
     }
 }
 
-// Autostart wird im AOT-Build manuell vom Nutzer gesetzt (siehe README).
+// Autostart wird manuell vom Nutzer gesetzt (siehe README).

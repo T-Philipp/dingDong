@@ -97,7 +97,7 @@ Schritte (ohne spezielle IDE, nur die .NET‑CLI):
 
 5. Autostart (optional)
 
-- Native AOT: Autostart bitte manuell setzen – lege eine Verknüpfung zu `dingdong-win.exe` in `%AppData%\Microsoft\Windows\Start Menu\Programs\Startup` ab.
+- Autostart bitte manuell setzen – lege eine Verknüpfung zu `dingdong-win.exe` in `%AppData%\Microsoft\Windows\Start Menu\Programs\Startup` ab.
 
 6. Optionales Icon
 
@@ -113,7 +113,7 @@ Schritte (ohne spezielle IDE, nur die .NET‑CLI):
 
 8. CI‑Build (Download)
 
-- In diesem Repo ist ein GitHub Actions Workflow enthalten, der auf einem Windows‑Runner die AOT‑EXE baut und als Artifact/Release bereitstellt. Liegt eine `bell.svg` vor, wird automatisch eine hochwertige `bell.ico` erzeugt und in die EXE eingebettet. Du findest das fertige Binary im Actions‑Tab oder bei Releases (bei Tags).
+- In diesem Repo ist ein GitHub Actions Workflow enthalten, der auf einem Windows‑Runner eine self‑contained Einzel‑EXE (SingleFile, ReadyToRun) baut und als Artifact/Release bereitstellt. Liegt eine `bell.svg` vor, wird automatisch eine hochwertige `bell.ico` erzeugt und in die EXE eingebettet. Du findest das fertige Binary im Actions‑Tab oder bei Releases (bei Tags).
 
 9. Einstellungen und Portabilität
 

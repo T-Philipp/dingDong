@@ -44,7 +44,7 @@ public static class SettingsManager
     }
 }
 
-// System.Text.Json source generation context for NativeAOT
+// System.Text.Json source generation context (AOT-/Trimming-freundlich)
 [JsonSourceGenerationOptions(WriteIndented = true, PropertyNameCaseInsensitive = true)]
 [JsonSerializable(typeof(AppSettings))]
 internal partial class AppSettingsJsonContext : JsonSerializerContext
