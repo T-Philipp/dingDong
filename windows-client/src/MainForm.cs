@@ -222,7 +222,7 @@ public partial class MainForm : Form
             if (string.IsNullOrWhiteSpace(url)) return;
             _settings.TimesUrl = url; // persist last good
             var timesJson = await _http.GetStringAsync(url);
-            var times = ParseTimes(timesJson);
+            var times = JsonHelpers.ParseTimes(timesJson);
             var nowUtc = await TimeSync.GetNetworkTimeUtcAsync();
             _scheduler.Update(times, nowUtc);
             lstTimes.Items.Clear();
@@ -420,30 +420,33 @@ public static class TimeSync
     }
 }
 
-private static List<ZusZeit> ParseTimes(string json)
+internal static class JsonHelpers
 {
-    var list = new List<ZusZeit>();
-    try
+    public static List<ZusZeit> ParseTimes(string json)
     {
-        using var doc = JsonDocument.Parse(json);
-        if (doc.RootElement.ValueKind == JsonValueKind.Array)
+        var list = new List<ZusZeit>();
+        try
         {
-            foreach (var el in doc.RootElement.EnumerateArray())
+            using var doc = JsonDocument.Parse(json);
+            if (doc.RootElement.ValueKind == JsonValueKind.Array)
             {
-                var day = el.TryGetProperty("day", out var d) ? d.GetString() : null;
-                var time = el.TryGetProperty("time", out var t) ? t.GetString() : null;
-                if (!string.IsNullOrWhiteSpace(day) && !string.IsNullOrWhiteSpace(time))
+                foreach (var el in doc.RootElement.EnumerateArray())
                 {
-                    list.Add(new ZusZeit(day!, time!));
+                    var day = el.TryGetProperty("day", out var d) ? d.GetString() : null;
+                    var time = el.TryGetProperty("time", out var t) ? t.GetString() : null;
+                    if (!string.IsNullOrWhiteSpace(day) && !string.IsNullOrWhiteSpace(time))
+                    {
+                        list.Add(new ZusZeit(day!, time!));
+                    }
                 }
             }
         }
+        catch (Exception ex)
+        {
+            AppLog.Write($"ParseTimes error: {ex.Message}");
+        }
+        return list;
     }
-    catch (Exception ex)
-    {
-        AppLog.Write($"ParseTimes error: {ex.Message}");
-    }
-    return list;
 }
 
 public static class AppLog
