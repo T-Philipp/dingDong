@@ -8,12 +8,13 @@
     <AssemblyName>dingdong-win</AssemblyName>
     <RootNamespace>dingdongwin</RootNamespace>
   <SelfContained>true</SelfContained>
-  <PublishAot>true</PublishAot>
-  <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
+  <!-- NativeAOT ist mit WinForms derzeit nicht unterstützt (NETSDK1175). Stattdessen: self-contained + ReadyToRun. -->
+  <PublishReadyToRun>true</PublishReadyToRun>
   <InvariantGlobalization>true</InvariantGlobalization>
   <StripSymbols>true</StripSymbols>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <PublishSingleFile>true</PublishSingleFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NAudio" Version="2.2.1" />
