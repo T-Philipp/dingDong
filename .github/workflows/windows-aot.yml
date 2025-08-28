@@ -1,0 +1,81 @@
+name: Build Windows AOT Client
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - 'v*'
+    paths:
+      - 'windows-client/**'
+      - '.github/workflows/windows-aot.yml'
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore
+        run: dotnet restore windows-client/src/dingdong-win.csproj
+
+      - name: Generate bell.ico from bell.svg (if present)
+        shell: pwsh
+        run: |
+          if (Test-Path 'windows-client/assets/bell.svg') {
+            choco install inkscape -y --no-progress
+            choco install imagemagick -y --no-progress
+            $svg = 'windows-client/assets/bell.svg'
+            $sizes = @(16,32,48,64,128,256)
+            $tmpPngs = @()
+            foreach ($s in $sizes) {
+              $png = "windows-client/assets/bell-$s.png"
+              inkscape $svg --export-type=png -o $png -w $s -h $s
+              $tmpPngs += $png
+            }
+            & magick $tmpPngs 'windows-client/assets/bell.ico'
+            # Cleanup temp PNGs
+            foreach ($p in $tmpPngs) { Remove-Item $p -ErrorAction SilentlyContinue }
+          }
+
+      - name: Publish (AOT, self-contained, single-file)
+        run: >-
+          dotnet publish windows-client/src/dingdong-win.csproj -c Release -r win-x64
+          -p:PublishSingleFile=true -p:SelfContained=true -p:IncludeNativeLibrariesForSelfExtract=true
+          -o windows-client/publish
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dingdong-win
+          path: windows-client/publish/**
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dingdong-win
+          path: dist
+
+      - name: Create zip
+        run: |
+          powershell -Command "Compress-Archive -Path dist/* -DestinationPath dingdong-win.zip"
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dingdong-win.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

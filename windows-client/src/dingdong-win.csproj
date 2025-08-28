@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+  <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>dingdong-win</AssemblyName>
+    <RootNamespace>dingdongwin</RootNamespace>
+  <SelfContained>true</SelfContained>
+  <PublishAot>true</PublishAot>
+  <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
+  <InvariantGlobalization>true</InvariantGlobalization>
+  <StripSymbols>true</StripSymbols>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishTrimmed>false</PublishTrimmed>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Embed icons so tray can load from resources; ApplicationIcon also uses bell.ico if exists -->
+    <EmbeddedResource Include="assets\*.ico" />
+  </ItemGroup>
+
+  <!-- Include default MP3s from pico/audio into publish output under ./audio -->
+  <ItemGroup>
+    <Content Include="..\..\pico\audio\*.mp3">
+      <Link>audio\%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!-- Conditionally set the EXE icon if bell.ico is available -->
+  <Choose>
+    <When Condition="Exists('assets\\bell.ico')">
+      <PropertyGroup>
+        <ApplicationIcon>assets/bell.ico</ApplicationIcon>
+      </PropertyGroup>
+    </When>
+  </Choose>
+</Project>

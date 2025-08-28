@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <!-- Minimalist bell icon, scalable vector -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="#0b1220"/>
+  <g transform="translate(32,24)">
+    <path d="M96 0c17.673 0 32 14.327 32 32v6.2c30.81 14.43 48 44.33 48 77.8v20.5c0 4.2 1.55 8.26 4.36 11.39l8.51 9.5c3.19 3.56.64 9.11-4.1 9.11H7.23c-4.74 0-7.29-5.55-4.1-9.11l8.51-9.5A16 16 0 0 0 16 136.5V116c0-33.47 17.19-63.37 48-77.8V32C64 14.327 78.327 0 96 0Z" fill="url(#g)"/>
+    <path d="M96 184c17.673 0 32-10.745 32-24H64c0 13.255 14.327 24 32 24Z" fill="#9db5ff" opacity="0.9"/>
+    <path d="M96 12c-11.046 0-20 8.954-20 20 0 2.21 1.79 4 4 4s4-1.79 4-4c0-6.627 5.373-12 12-12 2.21 0 4-1.79 4-4s-1.79-4-4-4Z" fill="#c7d2fe"/>
+  </g>
+  <!-- subtle ring -->
+  <ellipse cx="128" cy="194" rx="56" ry="10" fill="#111827" opacity="0.4"/>
+</svg>

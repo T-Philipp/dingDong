@@ -50,6 +50,82 @@ Das muss nur in der Datei `settings.toml` angepasst werden.
 
 Sämtliche Codes, inkl. Beispielen und der Konfiguration für beide Plattformen, liegen in diesem Repository und können nach Belieben angepasst werden.
 
+Hinweis: Zusätzlich zur Pico-Variante gibt es eine leichte Windows-Alternative unter `windows-client` (Tray-App), die die MP3 zu den gleichen Zeiten automatisch auf einem Windows‑PC abspielt. Sie eignet sich, wenn kein Pico eingesetzt werden soll.
+
+### Windows (Alternative zur Pico‑Variante)
+
+Mit dem Windows‑Client kannst du die MP3 automatisch auf einem Windows‑PC zu den Zeiten aus deiner JSON abspielen lassen – als kleine Tray‑App, die beim Start von Windows mitstarten kann.
+
+Schritte (ohne spezielle IDE, nur die .NET‑CLI):
+
+1. Voraussetzungen
+
+- Windows 11
+- .NET 9 SDK installiert (https://dotnet.microsoft.com/download)
+- Internetzugang (für Download der Zeiten‑JSON und NTP Zeitabgleich)
+
+2. Quellcode holen
+
+- Dieses Repository herunterladen oder klonen (z. B. als ZIP entpacken).
+
+3. EXE bauen (portable Einzeldatei)
+
+- Öffne PowerShell im Projektordner und führe aus:
+
+```powershell
+# Abhängigkeiten wiederherstellen
+ dotnet restore .\windows-client\src\dingdong-win.csproj
+
+# Publish als portable, self-contained Einzeldatei
+ dotnet publish .\windows-client\src\dingdong-win.csproj `
+  -c Release `
+  -r win-x64 `
+  -p:PublishSingleFile=true `
+  -p:SelfContained=true `
+  -p:IncludeNativeLibrariesForSelfExtract=true `
+  -o .\windows-client\publish
+```
+
+- Ergebnis: `windows-client\publish\dingdong-win.exe`
+
+4. Erste Inbetriebnahme
+
+- Starte `dingdong-win.exe`. Die App läuft im Tray (rechts unten). Ein Linksklick öffnet ein kleines Fenster.
+- Zeiten‑URL prüfen: Standard ist `https://dingdong.tavra.de/zus-zeiten.json` (kannst du lassen).
+- MP3 auswählen: Im Fenster findest du eine Auswahl aus dem lokalen Ordner `audio` (neben der EXE). Standard‑MP3s werden beim Build mit ausgeliefert. Du kannst beliebige zusätzliche MP3s einfach in diesen Ordner kopieren; die App aktualisiert die Liste automatisch.
+- Countdown zeigt die verbleibende Zeit bis zum nächsten Abspielzeitpunkt.
+
+5. Autostart (optional)
+
+- Native AOT: Autostart bitte manuell setzen – lege eine Verknüpfung zu `dingdong-win.exe` in `%AppData%\Microsoft\Windows\Start Menu\Programs\Startup` ab.
+
+6. Optionales Icon
+
+- Lege `windows-client/assets/bell.svg` ab (liegt bereits bei dir). Die CI erzeugt daraus automatisch eine `bell.ico` (mehrere Größen) und bettet sie als App-/Tray‑Icon ein. Alternativ kannst du auch direkt eine `bell.ico` bereitstellen.
+
+7. Betrieb und Hinweise
+
+- Die App lädt die Zeiten aus der konfigurierten JSON und synchronisiert die Uhrzeit per NTP (UTC → Europe/Berlin inkl. Sommer-/Winterzeit).
+- Polling der Zeiten ca. alle 60 Sekunden.
+- Verpasste Termine werden nicht nachgeholt (nur zukünftige Abspielzeiten).
+- Minimal‑Log mit Rotation liegt unter `%AppData%/dingDong/windows-client/app.log` (max. ~256 KB, letzte 5 Archive).
+- Für NTP muss ausgehend UDP Port 123 erlaubt sein. Ist NTP vorübergehend blockiert, nutzt die App die lokale Systemzeit.
+
+8. CI‑Build (Download)
+
+- In diesem Repo ist ein GitHub Actions Workflow enthalten, der auf einem Windows‑Runner die AOT‑EXE baut und als Artifact/Release bereitstellt. Liegt eine `bell.svg` vor, wird automatisch eine hochwertige `bell.ico` erzeugt und in die EXE eingebettet. Du findest das fertige Binary im Actions‑Tab oder bei Releases (bei Tags).
+
+9. Einstellungen und Portabilität
+
+- Die App speichert Benutzer‑Einstellungen unter `%AppData%/dingDong/windows-client/settings.json` (Zeiten‑URL, MP3‑Pfad, Lautstärke).
+- Die EXE ist portabel und kann in jeden beliebigen Ordner kopiert werden. Lege ein optionales `bell.ico` direkt daneben, falls du ein eigenes Icon möchtest.
+
+10. Deinstallation
+
+- Tray‑Menü „Beenden“ wählen, dann den Ordner `windows-client\publish` löschen.
+- Optional die Einstellungen entfernen: `%AppData%/dingDong/windows-client` löschen.
+- Wenn Autostart gesetzt wurde: Die Verknüpfung `dingdong-win.lnk` aus `%AppData%\Microsoft\Windows\Start Menu\Programs\Startup` entfernen.
+
 ### Pico
 
 Auf dem Pico läuft kein vollständiges Betriebssystem (wie z.B. das `Raspberry Pi OS` seines großen Bruders). Wir entwickeln direkt darauf mit einer kleinen Sprache namens `CircuitPython` (C oder MicroPython wäre auch möglich).
@@ -90,7 +166,7 @@ Beide Dinge bietet mir `Vercel` als Host mit einem Express-Server gratis an.
 
 Danach sollte unter `XYZ.vercel.app` dein persönliches Repository online sein.
 Ein Aufruf von `https://XYZ.vercel.app/time` sollte ein JSON inkl. der aktuellen Zeit zurückgeben.
-Ein Aufruf von `https://XYZ.vercel.app/zus-zeiten.json` sollte die Zusammenkunftszeiten ausgeben.
+Ein Aufruf von `https://dingdong.tavra.de/zus-zeiten.json` sollte die Zusammenkunftszeiten ausgeben.
 
 #### Zusammenkunftszeiten anpassen
 
