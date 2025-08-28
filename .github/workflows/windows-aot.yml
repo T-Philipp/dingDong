@@ -31,19 +31,8 @@ jobs:
         shell: pwsh
         run: |
           if (Test-Path 'windows-client/assets/bell.svg') {
-            choco install inkscape -y --no-progress
             choco install imagemagick -y --no-progress
-            $svg = 'windows-client/assets/bell.svg'
-            $sizes = @(16,32,48,64,128,256)
-            $tmpPngs = @()
-            foreach ($s in $sizes) {
-              $png = "windows-client/assets/bell-$s.png"
-              inkscape $svg --export-type=png -o $png -w $s -h $s
-              $tmpPngs += $png
-            }
-            & magick $tmpPngs 'windows-client/assets/bell.ico'
-            # Cleanup temp PNGs
-            foreach ($p in $tmpPngs) { Remove-Item $p -ErrorAction SilentlyContinue }
+            magick 'windows-client/assets/bell.svg' -background none -define icon:auto-resize=16,32,48,64,128,256 'windows-client/assets/bell.ico'
           }
 
       - name: Publish (AOT, self-contained, single-file)
