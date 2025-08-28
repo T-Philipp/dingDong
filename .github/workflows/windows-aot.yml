@@ -2,15 +2,14 @@ name: Build Windows Client
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     tags:
-      - 'v*'
+      - v*
     paths:
-  - 'windows-client/**'
-  - '.github/workflows/windows-aot.yml'
+      - windows-client/**
+      - .github/workflows/windows-aot.yml
   workflow_dispatch:
-  release:
-    types: [created]
 
 jobs:
   build:
@@ -22,7 +21,7 @@ jobs:
       - name: Setup .NET 9 SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: 9.0.x
 
       - name: Restore
         run: dotnet restore windows-client/src/dingdong-win.csproj
@@ -34,8 +33,9 @@ jobs:
             choco install imagemagick -y --no-progress
             magick 'windows-client/assets/bell.svg' -background none -define icon:auto-resize=16,32,48,64,128,256 'windows-client/assets/bell.ico'
           }
+
       - name: Publish (self-contained, single-file)
-        run: >-
+        run: >
           dotnet publish windows-client/src/dingdong-win.csproj -c Release -r win-x64
           -p:PublishSingleFile=true -p:SelfContained=true -p:IncludeNativeLibrariesForSelfExtract=true
           -o windows-client/publish
