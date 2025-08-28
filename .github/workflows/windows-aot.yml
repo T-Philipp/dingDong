@@ -6,7 +6,7 @@ on:
     tags:
       - 'v*'
     paths:
-      - 'windows-client/**'
+  - 'windows-client/**'
   - '.github/workflows/windows-aot.yml'
   workflow_dispatch:
   release:
@@ -34,8 +34,7 @@ jobs:
             choco install imagemagick -y --no-progress
             magick 'windows-client/assets/bell.svg' -background none -define icon:auto-resize=16,32,48,64,128,256 'windows-client/assets/bell.ico'
           }
-
-  - name: Publish (self-contained, single-file)
+      - name: Publish (self-contained, single-file)
         run: >-
           dotnet publish windows-client/src/dingdong-win.csproj -c Release -r win-x64
           -p:PublishSingleFile=true -p:SelfContained=true -p:IncludeNativeLibrariesForSelfExtract=true
